@@ -39,18 +39,18 @@ app.route('/api/:date?')
       dateNow = new Date();
       unixString = Date.parse(dateNow);
       unixTime = parseInt(unixString);
-      utcTime = new Date(dateNow).toString();
+      utcTime = new Date(dateNow).toUTCString();
 
 
     } else if (givenDate.includes('-')) { // case where the given date is 2015-12-12
       unixString = Date.parse(givenDate);
       unixTime = parseInt(unixString);
-      utcTime = new Date(givenDate).toString();
+      utcTime = new Date(givenDate).toUTCString();
 
 
     } else { // case where the given date is 1616608200
       unixTime = parseInt(givenDate);
-      utcTime = new Date(unixTime).toString();
+      utcTime = new Date(unixTime).toUTCString();
 
     }
     next();
