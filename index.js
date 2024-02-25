@@ -34,10 +34,11 @@ app.route('/api/:date?')
   .get(function (req, res, next) {
     givenDate = req.params.date;
     if (typeof givenDate  === "undefined") { // case where the given date is empty
-      unixString = Date.parse(givenDate);
-      unixTime = parseInt(unixString);
-      utcTime = new Date(dateNow).toUTCString();
-      objectSent = {error: "Invalid Date"};
+      error = new Date(givenDate).toString();
+
+
+      objectSent = {error};
+ 
  
 
     } else if (givenDate.includes('-')) { // case where the given date is 2015-12-12
