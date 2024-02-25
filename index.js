@@ -26,36 +26,37 @@ app.get("/api/hello", function (req, res) {
 /***** route structure *****/ 
 // route_path: '/api/:date'
 // actual_request_URL: '/api/2015-12-25'
-// req.params: {date: 2015-12-25} 
-// Or 
 // actual_request_URL: '/api/1451001600000'
 // req.params: {date: 1451001600000} 
+// req.params: {date: 2015-12-25} 
 /***************************/
 app.route('/api/:date?')
   .get(function (req, res, next) {
     givenDate = req.params.date;
-
     if (typeof givenDate  === "undefined") { // case where the given date is empty
-      dateNow = new Date();
-      unixString = Date.parse(dateNow);
+      unixString = Date.parse(givenDate);
       unixTime = parseInt(unixString);
       utcTime = new Date(dateNow).toUTCString();
-
+      objectSent = {error: "Invalid Date"};
+ 
 
     } else if (givenDate.includes('-')) { // case where the given date is 2015-12-12
       unixString = Date.parse(givenDate);
       unixTime = parseInt(unixString);
       utcTime = new Date(givenDate).toUTCString();
+      objectSent = {unix: unixTime, utc: utcTime};
 
 
     } else { // case where the given date is 1616608200
       unixTime = parseInt(givenDate);
       utcTime = new Date(unixTime).toUTCString();
+      objectSent = {unix: unixTime, utc: utcTime};
 
     }
+
     next();
   }, function(req, res) {
-    res.send({ unix: unixTime, utc: utcTime });
+    res.send(objectSent);
   })
 
 
