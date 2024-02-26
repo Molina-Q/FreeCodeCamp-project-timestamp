@@ -34,7 +34,7 @@ app.route('/api/:date?')
   .get(function (req, res, next) {
     givenDate = req.params.date;
     errorEmpty = false;
-    givenDateInt = parseInt(req.params.date);
+    givenDateInt = new Date(givenDate);
 
     if(!req.params.date) {
       //if(typeof givenDate  === "undefined") {
@@ -49,12 +49,14 @@ app.route('/api/:date?')
 
       utcTime = new Date(dateNow).toUTCString();
 
-      objectSent = {unix: unixTime, utc: utcTime};
-
+      //objectSent = {unix: unixTime, utc: utcTime};
+      res.json({ unix: unixTime, utc: utcTime});
     } 
     
     else if (new Date(parseInt(givenDate)).toString() === "Invalid Date" ) { // case where the given date is empty
       objectSent = {error: "Invalid Date"};
+      res.json({ error: "Invalid Date" });
+
     } 
 
     else if (givenDate.includes('-')) { // case where the given date is 2015-12-12
@@ -65,7 +67,8 @@ app.route('/api/:date?')
 
       utcTime = objDate.toUTCString();
 
-      objectSent = {unix: unixTime, utc: utcTime};
+      //objectSent = {unix: unixTime, utc: utcTime};
+      res.json({ unix: unixTime, utc: utcTime});
 
 
     } else { // case where the given date is 1616608200
@@ -76,14 +79,11 @@ app.route('/api/:date?')
 
       utcTime = objDate.toUTCString();
 
-      objectSent = {unix: unixTime, utc: utcTime};
-
+      //objectSent = {unix: unixTime, utc: utcTime};
+      res.json({ unix: unixTime, utc: utcTime});
     }
     console.log( new Date(parseInt(givenDate)).toString() );
-    
-    next();
-  }, function(req, res) {
-    res.send(objectSent);
+
   })
 
 // Listen on port set in environment variable or default to 3000
