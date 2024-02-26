@@ -35,6 +35,8 @@ app.route('/api/:date?')
     let givenDate = req.params.date;
     let errorEmpty = false;
 
+    let dateObject = new Date(givenDate)
+
     if(!req.params.date) {
       //if(typeof givenDate  === "undefined") {
       errorEmpty = true;
@@ -59,27 +61,22 @@ app.route('/api/:date?')
     } 
 
     else if (givenDate.includes('-')) { // case where the given date is 2015-12-12
-      objDate = new Date(givenDate);
 
-      unixString = Date.parse(objDate);
+      unixString = Date.parse(dateObject);
       unixTime = parseInt(unixString);
 
-      utcTime = objDate.toUTCString();
+      utcTime = dateObject.toUTCString();
 
       //objectSent = {unix: unixTime, utc: utcTime};
-      res.json({ unix: unixTime, utc: utcTime});
+      res.json({ unix: dateObject.valueOf(), utc: dateObject.toUTCString()});
 
 
     } else { // case where the given date is 1616608200
 
-      unixTime = parseInt(givenDate);
-
-      objDate = new Date(unixTime);
-
-      utcTime = objDate.toUTCString();
+      let unixTime = parseInt(givenDate);
 
       //objectSent = {unix: unixTime, utc: utcTime};
-      res.json({ unix: unixTime, utc: utcTime});
+      res.json({ unix: givenDate, utc: new Date(unixTime).toUTCString()});
     }
     console.log( new Date(parseInt(givenDate)).toString() );
 
