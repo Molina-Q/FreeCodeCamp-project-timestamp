@@ -32,9 +32,8 @@ app.get("/api/hello", function (req, res) {
 /***************************/
 app.route('/api/:date?')
   .get(function (req, res, next) {
-    givenDate = req.params.date;
-    errorEmpty = false;
-    givenDateInt = new Date(givenDate);
+    let givenDate = req.params.date;
+    let errorEmpty = false;
 
     if(!req.params.date) {
       //if(typeof givenDate  === "undefined") {
