@@ -76,7 +76,7 @@ app.route('/api/:date?')
       let unixTime = parseInt(givenDate);
 
       //objectSent = {unix: unixTime, utc: utcTime};
-      res.json({ unix: givenDate, utc: new Date(unixTime).toUTCString()});
+      res.json({ unix: parseInt(givenDate), utc: new Date(unixTime).toUTCString()});
     }
     console.log( new Date(parseInt(givenDate)).toString() );
 
