@@ -30,9 +30,9 @@ app.get("/api/hello", function (req, res) {
 // req.params: {date: 1451001600000} 
 // req.params: {date: 2015-12-25} 
 /***************************/
-app.route('/api/:date_string?')
+app.route('/api/:date?')
   .get(function (req, res, next) {
-    let givenDate = req.params.date_string;
+    let givenDate = req.params.date;
     let errorEmpty = false;
 
     if(!req.params.date) {
