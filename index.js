@@ -31,54 +31,34 @@ app.get("/api/hello", function (req, res) {
 // req.params: {date: 2015-12-25} 
 /***************************/
 app.route('/api/:date?')
-  .get(function (req, res, next) {
-    let givenDate = req.params.date;
+  .get(function (req, res) {
+    let dateString = req.params.date;
+    let dateObject = new Date(dateString);
+
     let errorEmpty = false;
 
-    let dateObject = new Date(givenDate)
-
     if(!req.params.date) {
-      //if(typeof givenDate  === "undefined") {
-      errorEmpty = true;
+      errorEmpty = true; 
     }
 
     if (errorEmpty) { // case where the given date is empty
       dateNow = new Date();
-
       unixString = Date.parse(dateNow);
-      unixTime = parseInt(unixString);
 
-      utcTime = new Date(dateNow).toUTCString();
+      res.json({ unix: parseInt(unixString), utc: dateNow.toUTCString()});
 
-      //objectSent = {unix: unixTime, utc: utcTime};
-      res.json({ unix: unixTime, utc: utcTime});
-    } 
-    
-    else if (new Date(parseInt(givenDate)).toString() === "Invalid Date" ) { // case where the given date is empty
-      objectSent = {error: "Invalid Date"};
+    } else if (/\d{5,}/.test(dateString)) { // case where the given date is this format 1616608200
+      let unixTime = parseInt(dateString);
+
+      res.json({ unix: unixTime, utc: new Date(unixTime).toUTCString()});
+
+    } else if (dateObject.toString() === "Invalid Date" ) { // case where the given date is not valid
       res.json({ error: "Invalid Date" });
 
-    } 
-
-    else if (givenDate.includes('-')) { // case where the given date is 2015-12-12
-
-      unixString = Date.parse(dateObject);
-      unixTime = parseInt(unixString);
-
-      utcTime = dateObject.toUTCString();
-
-      //objectSent = {unix: unixTime, utc: utcTime};
+    } else { // case where the given date is this format 2015-12-12
       res.json({ unix: dateObject.valueOf(), utc: dateObject.toUTCString()});
 
-
-    } else { // case where the given date is 1616608200
-
-      let unixTime = parseInt(givenDate);
-
-      //objectSent = {unix: unixTime, utc: utcTime};
-      res.json({ unix: parseInt(givenDate), utc: new Date(unixTime).toUTCString()});
-    }
-    console.log( new Date(parseInt(givenDate)).toString() );
+    } 
 
   })
 
